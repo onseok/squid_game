@@ -44,7 +44,7 @@
         android:id="@+id/characterImageView"
         android:layout_width="270dp"
         android:layout_height="270dp"
-        android:background="@color/white"
+        android:background="@drawable/character_background"
         android:src="@drawable/character_gihoon"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
