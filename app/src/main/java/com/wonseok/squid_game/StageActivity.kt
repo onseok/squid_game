@@ -1,10 +1,13 @@
 package com.wonseok.squid_game
 
 import android.annotation.SuppressLint
+import android.media.MediaPlayer
+import android.media.SoundPool
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
@@ -23,6 +26,9 @@ class StageActivity : AppCompatActivity() {
     private var playerNickName = ""
     private var runLeftFlag = false
     private var runRightFlag = false
+    private var isDetected = false
+    private lateinit var gameSound: MediaPlayer
+
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,6 +72,11 @@ class StageActivity : AppCompatActivity() {
                     runRightFlag = false
                 }
             }
+
+            if (isDetected) {
+                binding.playerLifeTextView.text = "\uD83D\uDC80"
+                setDialog()
+            }
             true
         }
 
@@ -84,8 +95,15 @@ class StageActivity : AppCompatActivity() {
                     runLeftFlag = false
                 }
             }
+            if (isDetected) {
+                binding.playerLifeTextView.text = "\uD83D\uDC80"
+                setDialog()
+            }
+
             true
         }
+
+//        initSound()
 
     }
 
@@ -99,7 +117,7 @@ class StageActivity : AppCompatActivity() {
     // 시간 끝나거나 죽으면 다이얼로그 세팅
     private fun setDialog() {
         // 죽는다면 리셋 다이얼로그
-        if(binding.playerLifeTextView.text == "")
+        if(binding.playerLifeTextView.text == "\uD83D\uDC80")
             mDelayHandler.post(::setResetDialog)
 
         // 죽지않고 시간이 끝난다면
@@ -113,9 +131,9 @@ class StageActivity : AppCompatActivity() {
         mDelayHandler.removeCallbacksAndMessages(null) // 과녁 이미지 동작 멈춤
         val score = playerScore
 
-//        val dialog = ResetDialogFragment(score)
-//        dialog.isCancelable = false
-//        dialog.show(supportFragmentManager, "DialogResetFragment")
+        val dialog = ResetDialogFragment(score)
+        dialog.isCancelable = false
+        dialog.show(supportFragmentManager, "DialogResetFragment")
     }
 
     // three stage 까지 완 -> Rank 판 보여주기
@@ -143,8 +161,6 @@ class StageActivity : AppCompatActivity() {
         binding.playerScoreNumberTextView.visibility = View.VISIBLE
         binding.playerNicknameTextView.visibility = View.VISIBLE
         binding.characterMotionImageView.visibility = View.VISIBLE
-        binding.leftRunButton.visibility = View.VISIBLE
-        binding.rightRunButton.visibility = View.VISIBLE
 
         binding.playerScoreNumberTextView.text = playerScore.toString()
 
@@ -155,10 +171,14 @@ class StageActivity : AppCompatActivity() {
 //        lifeLength = binding.playerLifeTextView.length()
         this.playerNickName = playerNickName // 닉네임 세팅
 
-//
+
 //        targetPositionX = binding.targetImageView.x
 //        arrowPositionX = binding.arrowImageView.x
-        startTimer()
+
+
+        initSound()
+
+
 //
 //        if(imageStatus)
 //            downImageMove()
@@ -166,8 +186,61 @@ class StageActivity : AppCompatActivity() {
 //            upImageMove()
     }
 
+    private fun initSound() {
+        // 게임 설명 사운드
+        gameSound = MediaPlayer.create(this@StageActivity, R.raw.mugunghwa_ready_sound)
+        gameSound.setVolume(1.0F, 1.0F)
+        gameSound.start()
+        mDelayHandler.postDelayed({
+            binding.leftRunButton.visibility = View.VISIBLE
+            binding.rightRunButton.visibility = View.VISIBLE
+            gameSound.pause()
+            gameSound.release()
+            startTimer()
+            mugunghwaSound()
+        }, 9200)
+    }
+
+    private fun mugunghwaSound() {
+        isDetected = false
+        gameSound = MediaPlayer.create(this@StageActivity,R.raw.mugunghwa_sound)
+        gameSound.setVolume(1.0F, 1.0F)
+        gameSound.start();
+        mDelayHandler.postDelayed({
+            gameSound.pause()
+            gameSound.release()
+            detectSound()
+        }, 4800)
+    }
+
+    private fun detectSound() {
+        gameSound = MediaPlayer.create(this@StageActivity,R.raw.mugunghwa_spin_sound)
+        gameSound.setVolume(1.0F, 1.0F)
+        gameSound.start();
+        mDelayHandler.postDelayed({
+            isDetected = true
+            gameSound.pause()
+            gameSound.release()
+            gunFirstSound()
+        }, 1500)
+    }
+
+    private fun gunFirstSound() {
+        gameSound = MediaPlayer.create(this@StageActivity,R.raw.mugunghwa_gun_sound)
+        gameSound.setVolume(1.0F, 1.0F)
+        gameSound.start();
+        mDelayHandler.postDelayed({
+            gameSound.pause()
+            gameSound.release()
+            mugunghwaSound()
+        }, 2500)
+    }
+
+
     // 타이머 동작
     private fun startTimer() {
+        binding.timeLifeMinuteTextView.text = "00"
+
         timerTask = timer(period = 10) {
             time++
             val sec = 59 - (time / 100)
@@ -187,5 +260,26 @@ class StageActivity : AppCompatActivity() {
     private fun stopTimer() {
         timerTask?.cancel() // 타이머 정지
         time = 0
+    }
+
+    // 게임 오바 되었을 때 뷰 재세팅
+    fun setReGameView() {
+//        stage = 1
+        playerScore = 0
+//        thisPlayerScore = 0
+        binding.playerScoreNumberTextView.text = playerScore.toString()
+//        binding.stageNumberTextView.text = stage.toString()
+
+//        binding.mainConstraintLayout.background = resources.getDrawable(backgroundImageArray[stage - 1])
+
+        binding.playerLifeTextView.text = "♥" // 생명 세팅
+//        lifeLength = binding.playerLifeTextView.length()
+
+        startTimer()
+
+//        if(imageStatus)
+//            downImageMove()
+//        else
+//            upImageMove()
     }
 }
