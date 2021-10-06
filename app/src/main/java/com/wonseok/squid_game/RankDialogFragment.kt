@@ -4,6 +4,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
@@ -26,6 +27,7 @@ class RankDialogFragment(private val playerNickName: String, private val playerS
 
     private val mDelayHandler: Handler by lazy { Handler() } // 종료할 때 딜레이 관련
 
+    private lateinit var endSound: MediaPlayer
     private lateinit var customAdapter: CustomAdapter
     private val rankItemArrayList = ArrayList<RankItem>()
 
@@ -48,14 +50,20 @@ class RankDialogFragment(private val playerNickName: String, private val playerS
 
         // click game end button
         binding.rankImageView.setOnClickListener {
-            Toast.makeText(context, "다음에 또 만나요 🖐", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "게임에 통과하셨습니다!", Toast.LENGTH_SHORT).show()
             mDelayHandler.postDelayed(::endGame, 1000L)
         }
+
+        endSound = MediaPlayer.create(activity, R.raw.end_game_sound)
+        endSound.setVolume(1.0F, 1.0F)
+        endSound.start()
 
         return view
     }
 
     private fun endGame() {
+        endSound.pause()
+        endSound.release()
         dismiss()
         (context as MainActivity).finish()
     }

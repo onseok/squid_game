@@ -2,6 +2,7 @@ package com.wonseok.squid_game
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.media.MediaPlayer
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -17,12 +18,14 @@ import com.wonseok.squid_game.databinding.FragmentStartDialogBinding
 import com.wonseok.squid_game.sqlite.DBHelper
 
 class StartDialogFragment : DialogFragment() {
+
     private var _binding: FragmentStartDialogBinding? = null
     private val binding get() = _binding!!
     private lateinit var dbHelper : DBHelper
 
     private val mDelayHandler: Handler by lazy { Handler() } // 과녁 이미지 딜레이 관련
     private var playerNickName = ""
+    private lateinit var enterSound: MediaPlayer
 
     private var imm : InputMethodManager? = null // 키보드 InputMethodManager
 
@@ -59,13 +62,19 @@ class StartDialogFragment : DialogFragment() {
                     mDelayHandler.postDelayed(::startGame, 1000L)
             }
             else
-                Toast.makeText(context, "🧙‍♀️ 이름을 입력해주세요", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "이름을 입력해주세요", Toast.LENGTH_SHORT).show()
         }
+
+        enterSound = MediaPlayer.create(activity, R.raw.enter_stage_sound)
+        enterSound.setVolume(1.0F, 1.0F)
+        enterSound.start()
 
         return view
     }
 
     private fun startGame() {
+        enterSound.pause()
+        enterSound.release()
         dismiss()
         (context as StageActivity).setGameView(playerNickName)
     }
@@ -94,7 +103,7 @@ class StartDialogFragment : DialogFragment() {
                 if (src.matches(Regex("[a-zA-Z]+"))) {
                     return@InputFilter src
                 }
-                Toast.makeText(requireContext(), "🧙‍♀️ 영어로 입력해주세요", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "영어로 입력해주세요", Toast.LENGTH_SHORT).show()
                 binding.nickNameEditText.setText("")
                 return@InputFilter ""
             }

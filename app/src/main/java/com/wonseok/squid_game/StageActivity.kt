@@ -1,6 +1,7 @@
 package com.wonseok.squid_game
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.media.MediaPlayer
 import android.media.SoundPool
 import androidx.appcompat.app.AppCompatActivity
@@ -11,6 +12,7 @@ import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
+import com.bumptech.glide.Glide
 import com.wonseok.squid_game.databinding.ActivityStageBinding
 import com.wonseok.squid_game.databinding.ActivityStageBinding.inflate
 import java.util.*
@@ -28,6 +30,8 @@ class StageActivity : AppCompatActivity() {
     private var runRightFlag = false
     private var isDetected = false
     private lateinit var gameSound: MediaPlayer
+    private var soundChooser: Int = 0
+    private var soundLength: Long = 4800
 
 
     @SuppressLint("ClickableViewAccessibility")
@@ -163,6 +167,7 @@ class StageActivity : AppCompatActivity() {
         binding.characterMotionImageView.visibility = View.VISIBLE
 
         binding.playerScoreNumberTextView.text = playerScore.toString()
+        Glide.with(this).load(R.drawable.detecting_robot).into(binding.detectRobotGifView)
 
 //        binding.targetImageView.setImageResource(R.drawable.ic_target)
 
@@ -198,25 +203,41 @@ class StageActivity : AppCompatActivity() {
             gameSound.release()
             startTimer()
             mugunghwaSound()
-        }, 9200)
+        }, 9500)
     }
 
     private fun mugunghwaSound() {
         isDetected = false
-        gameSound = MediaPlayer.create(this@StageActivity,R.raw.mugunghwa_sound)
+        binding.detectRobotGifView.visibility = View.INVISIBLE
+
+        when (soundChooser) {
+            0 -> {
+                gameSound = MediaPlayer.create(this@StageActivity,R.raw.mugunghwa_sound)
+                soundLength = 4800
+            }
+            1 -> {
+                gameSound = MediaPlayer.create(this@StageActivity,R.raw.mugunghwa_sound_standard)
+                soundLength = 3600
+            }
+            2 -> {
+                gameSound = MediaPlayer.create(this@StageActivity,R.raw.mugunghwa_sound_hard)
+                soundLength = 2800
+            }
+        }
         gameSound.setVolume(1.0F, 1.0F)
         gameSound.start();
         mDelayHandler.postDelayed({
             gameSound.pause()
             gameSound.release()
             detectSound()
-        }, 4800)
+        }, soundLength)
     }
 
     private fun detectSound() {
         gameSound = MediaPlayer.create(this@StageActivity,R.raw.mugunghwa_spin_sound)
         gameSound.setVolume(1.0F, 1.0F)
         gameSound.start();
+        binding.detectRobotGifView.visibility = View.VISIBLE
         mDelayHandler.postDelayed({
             isDetected = true
             gameSound.pause()
@@ -232,6 +253,9 @@ class StageActivity : AppCompatActivity() {
         mDelayHandler.postDelayed({
             gameSound.pause()
             gameSound.release()
+            // 0~2 사이의 무작위 Int 저장
+            val random = Random()
+            soundChooser = random.nextInt(3)
             mugunghwaSound()
         }, 2500)
     }
@@ -239,7 +263,7 @@ class StageActivity : AppCompatActivity() {
 
     // 타이머 동작
     private fun startTimer() {
-        binding.timeLifeMinuteTextView.text = "00"
+        binding.timeLifeMinuteTextView.text = "00:"
 
         timerTask = timer(period = 10) {
             time++
@@ -262,24 +286,11 @@ class StageActivity : AppCompatActivity() {
         time = 0
     }
 
-    // 게임 오바 되었을 때 뷰 재세팅
+    // 게임 오바 되었을 때 메인메뉴로 돌아가기
     fun setReGameView() {
-//        stage = 1
-        playerScore = 0
-//        thisPlayerScore = 0
-        binding.playerScoreNumberTextView.text = playerScore.toString()
-//        binding.stageNumberTextView.text = stage.toString()
-
-//        binding.mainConstraintLayout.background = resources.getDrawable(backgroundImageArray[stage - 1])
-
-        binding.playerLifeTextView.text = "♥" // 생명 세팅
-//        lifeLength = binding.playerLifeTextView.length()
-
-        startTimer()
-
-//        if(imageStatus)
-//            downImageMove()
-//        else
-//            upImageMove()
+        Handler(Looper.getMainLooper()).postDelayed({
+            val intent = Intent(this@StageActivity, MainActivity::class.java)
+            startActivity(intent)
+        }, 1500) // 1.5초후 메인화면 이동
     }
 }
