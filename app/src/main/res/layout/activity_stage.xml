@@ -11,26 +11,155 @@
         android:id="@+id/characterProfileImageView"
         android:layout_width="70dp"
         android:layout_height="70dp"
-        android:layout_marginStart="10dp"
         android:layout_marginTop="70dp"
+        android:layout_marginEnd="10dp"
         android:src="@drawable/character_gihoon_profile"
+        android:visibility="invisible"
         app:civ_border_color="@color/main_color"
         app:civ_border_width="1dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
 
     <TextView
         android:id="@+id/characterProfileNameTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
         android:layout_marginTop="10dp"
         android:fontFamily="@font/main_font"
         android:text="기훈"
-        android:textStyle="bold"
         android:textColor="@color/main_color"
         android:textSize="20sp"
-        app:layout_constraintStart_toEndOf="@id/characterProfileImageView"
-        app:layout_constraintTop_toTopOf="@id/characterProfileImageView" />
+        android:textStyle="bold"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="@id/characterProfileImageView"
+        app:layout_constraintStart_toStartOf="@id/characterProfileImageView"
+        app:layout_constraintTop_toBottomOf="@id/characterProfileImageView"
+        tools:visibility="visible" />
+
+
+    <TextView
+        android:id="@+id/playerNicknameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:ellipsize="end"
+        android:text="wonsk"
+        android:textColor="@color/main_color"
+        android:textSize="13sp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="@id/characterProfileNameTextView"
+        app:layout_constraintStart_toStartOf="@id/characterProfileNameTextView"
+        app:layout_constraintTop_toBottomOf="@id/characterProfileNameTextView"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/playerLifeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="♥"
+        android:textColor="@color/main_color"
+        android:textStyle="bold"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="@id/playerNicknameTextView"
+        app:layout_constraintStart_toStartOf="@id/playerNicknameTextView"
+        app:layout_constraintTop_toBottomOf="@id/playerNicknameTextView"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/timeLifeMinuteTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/black"
+        android:text="00:"
+        android:textColor="@color/white"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/timeLifeSecondTextView"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.36"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/timeLifeSecondTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/black"
+        android:text="59"
+        android:textColor="@color/white"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@id/timeLifeMinuteTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/timeLifeMinuteTextView"
+        app:layout_constraintTop_toTopOf="@id/timeLifeMinuteTextView"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/playerScoreNumberTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        android:textColor="@color/white"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/timeLifeMinuteTextView"
+        app:layout_constraintVertical_bias="0.9"
+        tools:visibility="visible" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/characterMotionImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/stop_motion"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@id/playerScoreNumberTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1"
+        tools:visibility="visible" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/leftRunButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="70dp"
+        android:layout_marginEnd="10dp"
+        android:backgroundTint="@color/transparent"
+        android:src="@drawable/ic_run_left"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/timeLifeSecondTextView"
+        app:layout_constraintVertical_bias="0.7"
+        tools:visibility="visible" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/rightRunButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="70dp"
+        android:backgroundTint="@color/transparent"
+        android:src="@drawable/ic_run_right"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/timeLifeSecondTextView"
+        app:layout_constraintVertical_bias="0.7"
+        tools:visibility="visible" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

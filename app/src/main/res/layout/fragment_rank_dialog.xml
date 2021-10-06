@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="5dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_gravity="center"
+    android:background="@color/transparent">
+
+    <ImageView
+        android:id="@+id/rankImageView"
+        android:layout_width="380dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="10dp"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+        android:src="@drawable/ic_console"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@color/transparent" />
+
+    <LinearLayout
+        android:id="@+id/rankLinearLayout"
+        android:layout_width="270dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_marginStart="13dp"
+        app:layout_constraintStart_toStartOf="@id/rankImageView"
+        app:layout_constraintTop_toTopOf="@id/rankImageView">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Rank"
+            android:textSize="12sp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/main_font" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.5"
+            android:gravity="center"
+            android:text="PlayerNickname"
+            android:textSize="12sp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/main_font" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="점수"
+            android:textSize="12sp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/main_font" />
+
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/rankListView"
+        android:layout_width="270dp"
+        android:layout_height="250dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="13dp"
+        tools:listitem="@layout/item_rank"
+        app:layout_constraintStart_toStartOf="@id/rankImageView"
+        app:layout_constraintTop_toBottomOf="@id/rankLinearLayout"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
