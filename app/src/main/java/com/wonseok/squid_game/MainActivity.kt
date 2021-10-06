@@ -1,5 +1,6 @@
 package com.wonseok.squid_game
 
+import android.content.Intent
 import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -53,6 +54,12 @@ class MainActivity : AppCompatActivity() {
 
         setCharactersInfo()
         changeCharacterInfo() // 왼쪽, 오른쪽 버튼 클릭에 따라 캐릭터 정보가 바뀌는 함수
+
+        binding.characterSelectButton.setOnClickListener {
+            val intent = Intent(this, StageLoadingActivity::class.java)
+            intent.putExtra("name", binding.characterNameTextView.text)
+            startActivity(intent)
+        }
 
     }
 

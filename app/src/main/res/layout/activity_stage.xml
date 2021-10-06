@@ -4,6 +4,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/main_game_stage_1"
     tools:context=".StageActivity">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/characterProfileImageView"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="70dp"
+        android:src="@drawable/character_gihoon_profile"
+        app:civ_border_color="@color/main_color"
+        app:civ_border_width="1dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/characterProfileNameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/main_font"
+        android:text="기훈"
+        android:textStyle="bold"
+        android:textColor="@color/main_color"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@id/characterProfileImageView"
+        app:layout_constraintTop_toTopOf="@id/characterProfileImageView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

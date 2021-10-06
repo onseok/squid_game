@@ -11,6 +11,9 @@
         <entry key="..\:/Users/wonseok/AndroidStudioProjects/squid_game/app/src/main/res/drawable/ic_volume_off.xml" value="0.38229166666666664" />
         <entry key="..\:/Users/wonseok/AndroidStudioProjects/squid_game/app/src/main/res/layout/activity_intro.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/wonseok/AndroidStudioProjects/squid_game/app/src/main/res/layout/activity_main.xml" value="0.33" />
+        <entry key="..\:/Users/wonseok/AndroidStudioProjects/squid_game/app/src/main/res/layout/activity_stage.xml" value="0.5" />
+        <entry key="..\:/Users/wonseok/AndroidStudioProjects/squid_game/app/src/main/res/layout/activity_stage_loading.xml" value="0.33" />
+        <entry key="..\:/Users/wonseok/AndroidStudioProjects/squid_game/app/src/main/res/layout/character_profile.xml" value="0.36614583333333334" />
       </map>
     </option>
   </component>

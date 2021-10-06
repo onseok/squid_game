@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Squid_game">
         <activity
+            android:name=".StageLoadingActivity"
+            android:exported="true" />
+        <activity
             android:name=".StageActivity"
             android:exported="true" />
         <activity
