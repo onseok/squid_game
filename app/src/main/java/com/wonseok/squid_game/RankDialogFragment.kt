@@ -7,6 +7,7 @@ import android.graphics.drawable.ColorDrawable
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,7 +26,7 @@ class RankDialogFragment(private val playerNickName: String, private val playerS
     private val binding get() = _binding!!
     private lateinit var dbHelper: DBHelper
 
-    private val mDelayHandler: Handler by lazy { Handler() } // 종료할 때 딜레이 관련
+    private val mDelayHandler: Handler by lazy { Handler(Looper.getMainLooper()) } // 종료할 때 딜레이 관련
 
     private lateinit var endSound: MediaPlayer
     private lateinit var customAdapter: CustomAdapter

@@ -107,8 +107,6 @@ class StageActivity : AppCompatActivity() {
             true
         }
 
-//        initSound()
-
     }
 
     // 시작 다이얼로그 버튼 불러오기
@@ -121,18 +119,18 @@ class StageActivity : AppCompatActivity() {
     // 시간 끝나거나 죽으면 다이얼로그 세팅
     private fun setDialog() {
         // 죽는다면 리셋 다이얼로그
-        if(binding.playerLifeTextView.text == "\uD83D\uDC80")
+        if (binding.playerLifeTextView.text == "\uD83D\uDC80")
             mDelayHandler.post(::setResetDialog)
 
         // 죽지않고 시간이 끝난다면
-        else if(binding.playerLifeTextView.text == "♥")
+        else if (binding.playerLifeTextView.text == "♥")
             mDelayHandler.post(::setRankDialog)
     }
 
     // 다 멈추고, 리셋 다이얼로그 버튼 불러오기
     private fun setResetDialog() {
         stopTimer() // 타이머 멈추고
-        mDelayHandler.removeCallbacksAndMessages(null) // 과녁 이미지 동작 멈춤
+        mDelayHandler.removeCallbacksAndMessages(null)
         val score = playerScore
 
         val dialog = ResetDialogFragment(score)
@@ -140,10 +138,9 @@ class StageActivity : AppCompatActivity() {
         dialog.show(supportFragmentManager, "DialogResetFragment")
     }
 
-    // three stage 까지 완 -> Rank 판 보여주기
     private fun setRankDialog() {
         stopTimer() // 타이머 멈추고
-        mDelayHandler.removeCallbacksAndMessages(null) // 과녁 이미지 동작 멈춤
+        mDelayHandler.removeCallbacksAndMessages(null)
         val score = playerScore
 
         val dialog = RankDialogFragment(playerNickName, score)
@@ -153,9 +150,6 @@ class StageActivity : AppCompatActivity() {
 
     // 게임 뷰 세팅하기
     fun setGameView(playerNickName: String) {
-//        binding.mainConstraintLayout.setPadding(0, statusBarHeight(this), navigationBarHeight(this), 0)
-//        Glide.with(this).load(R.raw.cat_player_01).override(250,250).into(binding.playerImageView)
-//
 
         binding.characterProfileImageView.visibility = View.VISIBLE
         binding.characterProfileNameTextView.visibility = View.VISIBLE
@@ -169,33 +163,22 @@ class StageActivity : AppCompatActivity() {
         binding.playerScoreNumberTextView.text = playerScore.toString()
         Glide.with(this).load(R.drawable.detecting_robot).into(binding.detectRobotGifView)
 
-//        binding.targetImageView.setImageResource(R.drawable.ic_target)
-
         binding.playerLifeTextView.text = "♥" // 생명 세팅 ( 목숨은 1개 )
         binding.playerNicknameTextView.text = playerNickName
-//        lifeLength = binding.playerLifeTextView.length()
         this.playerNickName = playerNickName // 닉네임 세팅
-
-
-//        targetPositionX = binding.targetImageView.x
-//        arrowPositionX = binding.arrowImageView.x
-
 
         initSound()
 
-
-//
-//        if(imageStatus)
-//            downImageMove()
-//        else
-//            upImageMove()
     }
 
     private fun initSound() {
-        // 게임 설명 사운드
-        gameSound = MediaPlayer.create(this@StageActivity, R.raw.mugunghwa_ready_sound)
-        gameSound.setVolume(1.0F, 1.0F)
-        gameSound.start()
+        // 게임 설명 사운드 쓰레드 시작
+        Thread {
+            gameSound = MediaPlayer.create(this@StageActivity, R.raw.mugunghwa_ready_sound)
+            gameSound.setVolume(1.0F, 1.0F)
+            gameSound.start()
+        }.start()
+
         mDelayHandler.postDelayed({
             binding.leftRunButton.visibility = View.VISIBLE
             binding.rightRunButton.visibility = View.VISIBLE
@@ -212,20 +195,26 @@ class StageActivity : AppCompatActivity() {
 
         when (soundChooser) {
             0 -> {
-                gameSound = MediaPlayer.create(this@StageActivity,R.raw.mugunghwa_sound)
+                gameSound = MediaPlayer.create(this@StageActivity, R.raw.mugunghwa_sound)
                 soundLength = 4800
             }
             1 -> {
-                gameSound = MediaPlayer.create(this@StageActivity,R.raw.mugunghwa_sound_standard)
+                gameSound =
+                    MediaPlayer.create(this@StageActivity, R.raw.mugunghwa_sound_standard)
                 soundLength = 3600
             }
             2 -> {
-                gameSound = MediaPlayer.create(this@StageActivity,R.raw.mugunghwa_sound_hard)
+                gameSound = MediaPlayer.create(this@StageActivity, R.raw.mugunghwa_sound_hard)
                 soundLength = 2800
             }
         }
-        gameSound.setVolume(1.0F, 1.0F)
-        gameSound.start();
+
+        // 무궁화 꽃이 피었습니다 쓰레드
+        Thread {
+            gameSound.setVolume(1.0F, 1.0F)
+            gameSound.start();
+        }.start()
+
         mDelayHandler.postDelayed({
             gameSound.pause()
             gameSound.release()
@@ -234,9 +223,14 @@ class StageActivity : AppCompatActivity() {
     }
 
     private fun detectSound() {
-        gameSound = MediaPlayer.create(this@StageActivity,R.raw.mugunghwa_spin_sound)
-        gameSound.setVolume(1.0F, 1.0F)
-        gameSound.start();
+        
+        // 고개 돌리는 소리 쓰레드
+        Thread {
+            gameSound = MediaPlayer.create(this@StageActivity, R.raw.mugunghwa_spin_sound)
+            gameSound.setVolume(1.0F, 1.0F)
+            gameSound.start();
+        }.start()
+
         binding.detectRobotGifView.visibility = View.VISIBLE
         mDelayHandler.postDelayed({
             isDetected = true
@@ -247,9 +241,14 @@ class StageActivity : AppCompatActivity() {
     }
 
     private fun gunFirstSound() {
-        gameSound = MediaPlayer.create(this@StageActivity,R.raw.mugunghwa_gun_sound)
-        gameSound.setVolume(1.0F, 1.0F)
-        gameSound.start();
+        
+        // 총쏘는 소리 쓰레드
+        Thread {
+            gameSound = MediaPlayer.create(this@StageActivity, R.raw.mugunghwa_gun_sound)
+            gameSound.setVolume(1.0F, 1.0F)
+            gameSound.start();
+        }.start()
+
         mDelayHandler.postDelayed({
             gameSound.pause()
             gameSound.release()
@@ -265,10 +264,12 @@ class StageActivity : AppCompatActivity() {
     private fun startTimer() {
         binding.timeLifeMinuteTextView.text = "00:"
 
+        // 백그라운드로 실행되는 부분, UI조작 X
         timerTask = timer(period = 10) {
             time++
             val sec = 59 - (time / 100)
 
+            // UI 조작 로직
             runOnUiThread {
                 if (sec < 10)
                     binding.timeLifeSecondTextView.text = "0$sec"
@@ -276,21 +277,22 @@ class StageActivity : AppCompatActivity() {
                     binding.timeLifeSecondTextView.text = "$sec"
             }
 
-            if(sec == 0)
+            if (sec == 0)
                 mDelayHandler.post(::setDialog)
         }
     }
 
+    // 타이머 정지
     private fun stopTimer() {
-        timerTask?.cancel() // 타이머 정지
+        timerTask?.cancel()
         time = 0
     }
 
-    // 게임 오바 되었을 때 메인메뉴로 돌아가기
+    //  죽었을 때에는 메인메뉴로 돌아가기
     fun setReGameView() {
         Handler(Looper.getMainLooper()).postDelayed({
             val intent = Intent(this@StageActivity, MainActivity::class.java)
             startActivity(intent)
-        }, 1500) // 1.5초후 메인화면 이동
+        }, 1500) // 1.5초후 메인메뉴로 이동
     }
 }
