@@ -2,7 +2,9 @@
 
 넷플릭스 드라마 '오징어게임'의 무궁화꽃이피었습니다 부분을 모바일 게임으로 구현
 
-- Multi Thread
+# Tech stack & Open-source libraries
+- [Glide](https://github.com/bumptech/glide)
+- [Multi_Thread]
 
 
 # 스크린샷
